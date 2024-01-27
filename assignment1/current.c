@@ -25,26 +25,30 @@
 #include <sys/time.h>
 
 int main(int argc, char* argv[])
-{double input_1 = 0.0;
- double input_2 = 0.0;
- double input_3 = 0.0;
+{double side1, side2, side3, angle ,area;
+ const double PI = 3.14159;
 
  printf("Welcome to Euclidean Triangles\n");
  printf("This software was built by and maintained by Systems Programmer Jennifer Lucas.\n");
  time_t current_linux_time;
  current_linux_time = time(NULL);
- struct tm * broken = localtime(&current_linux_time);
- printf("Today is %04d-%02d-%02d\n", broken->tm_year+1900, broken->tm_mon+1, broken->tm_mday);
+
+ //printf("Today is %02d %02d, %02d\n", utc->tm_mon , utc->tm_mday, utc->tm_year+1900);
  printf("This program will manage all of your triangles.\n");
  printf("Enter a float number for each quantity first side, second side, and angle in degrees between\nthose two sides. Separate each quantity by ws. After the third quantity press enter.\n");
- scanf("%lf %lf %lf", &input_1, &input_2, &input_3);
+ scanf("%lf %lf %lf", &side1, &side2, &angle);
+ printf("You entered %5.5f and %5.5f for sides and %5.5f for the angle.\n", side1, side2, angle);
 
- printf("You entered %5.5f and %5.5f for sides and %5.5f for the angle.\n", input_1, input_2, input_3);
+ area = 0.5 * side1 * side2 * sin(angle * PI / 180);
+ printf("The area of this triangle is %1f square units.\n", area);
 
- printf("The length of the third side of the triangle is linear units.\n");
- printf("The elapsed time since the Great Epoch is seconds.\n");
- printf("Have a nice day.");
- printf("An integer 0 will be sent to the operating system as a signal of successful execution.  Bye.");
+
+ side3 = sqrt(pow(side1, 2) + pow(side2, 2) - (2 * side1 * side2 * cos(angle * PI / 180)));
+ printf("The length of the third side of the triangle is %lf linear units.\n", side3);
+
+ printf("The elapsed time since the Great Epoch is %lu seconds.\n", current_linux_time);
+ printf("Have a nice day.\n");
+ printf("An integer 0 will be sent to the operating system as a signal of successful execution.  Bye.\n");
 
  return 0;
 }//End of main
