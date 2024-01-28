@@ -32,21 +32,35 @@ int main(int argc, char* argv[])
  printf("This software was built by and maintained by Systems Programmer Jennifer Lucas.\n");
  time_t current_linux_time;
  current_linux_time = time(NULL);
+ char * month_names[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 
- //printf("Today is %02d %02d, %02d\n", utc->tm_mon , utc->tm_mday, utc->tm_year+1900);
+
+ struct tm * broken = localtime(&current_linux_time);
+ if (broken->tm_hour > 12) {
+  printf("Today is %s %02d, %04d at %02d:%02dpm.\n", month_names[broken->tm_mon+1], broken->tm_mday, broken->tm_year+1900 , broken->tm_hour - 12, broken->tm_min);
+ } else {
+  printf("Today is %s %02d, %04d at %02d:%02dam.\n", month_names[broken->tm_mon+1], broken->tm_mday, broken->tm_year+1900 , broken->tm_hour - 12, broken->tm_min);
+ }
+
  printf("This program will manage all of your triangles.\n");
  printf("Enter a float number for each quantity first side, second side, and angle in degrees between\nthose two sides. Separate each quantity by ws. After the third quantity press enter.\n");
  scanf("%lf %lf %lf", &side1, &side2, &angle);
- printf("You entered %5.5f and %5.5f for sides and %5.5f for the angle.\n", side1, side2, angle);
-
- area = 0.5 * side1 * side2 * sin(angle * PI / 180);
- printf("The area of this triangle is %1f square units.\n", area);
 
 
- side3 = sqrt(pow(side1, 2) + pow(side2, 2) - (2 * side1 * side2 * cos(angle * PI / 180)));
- printf("The length of the third side of the triangle is %lf linear units.\n", side3);
+ if (side1 < 0 ||side2 < 0 || angle < 0) {
+  printf("You entered %5.5f, %5.5f, and %5.5f.\n", side1, side2, angle);
+  printf("There are invalid data among these inputs. Please run this program again\n");
+ } else {
+  printf("You entered %5.5f and %5.5f for sides and %5.5f for the angle.\n", side1, side2, angle);
+  area = 0.5 * side1 * side2 * sin(angle * PI / 180);
+  printf("The area of this triangle is %1f square units.\n", area);
 
- printf("The elapsed time since the Great Epoch is %lu seconds.\n", current_linux_time);
+
+  side3 = sqrt(pow(side1, 2) + pow(side2, 2) - (2 * side1 * side2 * cos(angle * PI / 180)));
+  printf("The length of the third side of the triangle is %lf linear units.\n", side3);
+
+  printf("The elapsed time since the Great Epoch is %lu seconds.\n", current_linux_time);
+ }
  printf("Have a nice day.\n");
  printf("An integer 0 will be sent to the operating system as a signal of successful execution.  Bye.\n");
 
