@@ -10,8 +10,8 @@
 
 //Programming language: C language
 //Date development begun: 2024-Jan-23
-//Date of last update:    2024-Jan-26
-//Status: Calculting time and area
+//Date of last update:    2024-Feb-3
+//Status: Finished the program
 
 //Compile:  gcc -c -Wall -m64 -no-pie -o current.o current.c -std=c2x
 //Link:  gcc -m64 -no-pie -o time.out current.o -std=c2x
@@ -19,37 +19,87 @@
 
 //======== Begin source code ==========
 
-#include "stdio.h"     //Provides access to printf and scanf
+#include <stdio.h>     //Provides access to printf and scanf
 #include <math.h>      //Provides access to ldexp
 #include <time.h>
 #include <sys/time.h>
+
+char * monthName(unsigned int number) {
+  char * month;
+  switch(number) {
+    case 1:
+        month = "January";
+        break;
+    case 2:
+        month = "February";
+        break;
+    case 3:
+        month = "March";
+        break;
+    case 4:
+        month = "April";
+        break;
+    case 5:
+        month = "May";
+        break;
+    case 6:
+        month = "June";
+        break;
+    case 7:
+        month = "July";
+        break;
+    case 8:
+        month = "August";
+        break;
+    case 9:
+        month = "September";
+        break;
+    case 10:
+        month = "October";
+        break;
+    case 11:
+        month = "November";
+        break;
+    case 12:
+        month = "December";
+        break;
+   }
+  return month;
+}
 
 int main(int argc, char* argv[])
 {double side1, side2, side3, angle ,area;
  const double PI = 3.14159;
 
- printf("Welcome to Euclidean Triangles\n");
- printf("This software was built by and maintained by Systems Programmer Jennifer Lucas.\n");
+ printf("%s", "Welcome to Euclidean Triangles\n");
+ printf("%s", "This software was built by and maintained by Systems Programmer Jennifer Lucas.\n");
  time_t current_linux_time;
  current_linux_time = time(NULL);
- char * month_names[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-
-
  struct tm * broken = localtime(&current_linux_time);
- if (broken->tm_hour > 12) {
-  printf("Today is %s %02d, %04d at %02d:%02dpm.\n", month_names[broken->tm_mon+1], broken->tm_mday, broken->tm_year+1900 , broken->tm_hour - 12, broken->tm_min);
- } else {
-  printf("Today is %s %02d, %04d at %02d:%02dam.\n", month_names[broken->tm_mon+1], broken->tm_mday, broken->tm_year+1900 , broken->tm_hour - 12, broken->tm_min);
- }
 
- printf("This program will manage all of your triangles.\n");
- printf("Enter a float number for each quantity first side, second side, and angle in degrees between\nthose two sides. Separate each quantity by ws. After the third quantity press enter.\n");
+if (broken->tm_hour > 12) {
+  broken->tm_hour -= 12;
+}
+
+printf("Today is %s %d, %04d at %d:%02d", monthName(broken->tm_mon + 1),
+                                              broken->tm_mday,
+                                              broken->tm_year+1900,
+                                              broken->tm_hour,
+                                              broken->tm_min);
+if (broken->tm_hour - 12 < 12) {
+  printf("%s", "pm\n");
+} else {
+  printf("%s", "am\n");
+}
+
+ printf("%s", "This program will manage all of your triangles.\n");
+ printf("%s", "Enter a float number for each quantity first side, second side, and angle in degrees between\nthose two sides. Separate each quantity by ws. After the third quantity press enter.\n");
  scanf("%lf %lf %lf", &side1, &side2, &angle);
 
 
  if (side1 < 0 ||side2 < 0 || angle < 0) {
   printf("You entered %5.5f, %5.5f, and %5.5f.\n", side1, side2, angle);
-  printf("There are invalid data among these inputs. Please run this program again\n");
+  printf("%s", "There are invalid data among these inputs. Please run this program again\n");
  } else {
   printf("You entered %5.5f and %5.5f for sides and %5.5f for the angle.\n", side1, side2, angle);
   area = 0.5 * side1 * side2 * sin(angle * PI / 180);
@@ -61,9 +111,8 @@ int main(int argc, char* argv[])
 
   printf("The elapsed time since the Great Epoch is %lu seconds.\n", current_linux_time);
  }
- printf("Have a nice day.\n");
- printf("An integer 0 will be sent to the operating system as a signal of successful execution.  Bye.\n");
+ printf("%s", "Have a nice day.\n");
+ printf("%s", "An integer 0 will be sent to the operating system as a signal of successful execution.  Bye.\n");
 
  return 0;
 }//End of main
-
