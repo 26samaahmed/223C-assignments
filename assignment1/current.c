@@ -2,12 +2,6 @@
 //Contact: 26samahmed@csu.fullerton.edu
 
 //Program name: Current Time
-
-//Historically the C language only made provision for 32-bit random numbers.  Today we live in a computational world
-//shere the norm is 64-bit processing for everything.  How do C programmers create 64-bit random integers for use in
-//modern applications?  This program provides a solution to that question.  The author does not know if it is the 'best'
-//solution, but at least this program provides some insight into creating numerically large integral random values.
-
 //Programming language: C language
 //Date development begun: 2024-Jan-23
 //Date of last update:    2024-Feb-3
