@@ -16,7 +16,6 @@
 //Compile:  gcc -c -Wall -m64 -no-pie -o current.o current.c -std=c2x
 //Link:  gcc -m64 -no-pie -o time.out current.o -std=c2x
 
-
 //======== Begin source code ==========
 
 #include <stdio.h>     //Provides access to printf and scanf
@@ -24,6 +23,7 @@
 #include <time.h>
 #include <sys/time.h>
 
+// Create a function that changes the month integer into the month name.
 char * monthName(unsigned int number) {
   char * month;
   switch(number) {
@@ -77,35 +77,40 @@ int main(int argc, char* argv[])
  current_linux_time = time(NULL);
  struct tm * broken = localtime(&current_linux_time);
 
-if (broken->tm_hour > 12) {
-  broken->tm_hour -= 12;
-}
+ // Convert from military time to standard time by subtracting 12 if the current hour is between 12pm and 12am
+ if (broken->tm_hour > 12) {
+   broken->tm_hour -= 12;
+ }
 
-printf("Today is %s %d, %04d at %d:%02d", monthName(broken->tm_mon + 1),
+ printf("Today is %s %d, %04d at %d:%02d", monthName(broken->tm_mon + 1),
                                               broken->tm_mday,
                                               broken->tm_year+1900,
                                               broken->tm_hour,
                                               broken->tm_min);
-if (broken->tm_hour - 12 < 12) {
-  printf("%s", "pm\n");
-} else {
-  printf("%s", "am\n");
-}
+
+ // Print PM or AM depending on whether its during the day or after midnight
+ if (broken->tm_hour - 12 < 12) {
+   printf("%s", "pm\n");
+ } else {
+   printf("%s", "am\n");
+ }
 
  printf("%s", "This program will manage all of your triangles.\n");
- printf("%s", "Enter a float number for each quantity first side, second side, and angle in degrees between\nthose two sides. Separate each quantity by ws. After the third quantity press enter.\n");
+ printf("%s", "Enter a float number for each quantity first side, second side, and angle in degrees between those two sides. Separate each quantity by ws. After the third quantity press enter.\n");
  scanf("%lf %lf %lf", &side1, &side2, &angle);
 
-
+ // Check if there are any invalid inputs (negative inputs)
  if (side1 < 0 ||side2 < 0 || angle < 0) {
   printf("You entered %5.5f, %5.5f, and %5.5f.\n", side1, side2, angle);
   printf("%s", "There are invalid data among these inputs. Please run this program again\n");
  } else {
   printf("You entered %5.5f and %5.5f for sides and %5.5f for the angle.\n", side1, side2, angle);
+
+  // Caclulate the area of triangle using this formula
   area = 0.5 * side1 * side2 * sin(angle * PI / 180);
-  printf("The area of this triangle is %1f square units.\n", area);
+  printf("The area of this triangle is %5f square units.\n", area);
 
-
+  // Calculate the the 3rd side of the triangle using this formula
   side3 = sqrt(pow(side1, 2) + pow(side2, 2) - (2 * side1 * side2 * cos(angle * PI / 180)));
   printf("The length of the third side of the triangle is %lf linear units.\n", side3);
 
