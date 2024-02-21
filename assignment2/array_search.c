@@ -11,7 +11,7 @@
 //Programming language: C language
 //Date development begun: 2024-Feb-10
 //Date of last update:    2024-Feb-21
-//Status: Ask user to input file name and check if it exists
+//Status: Fix issue with printing statements when user enters control D
 //Compile:  gcc -c -Wall -m64 -no-pie -o search.o array_search.c -lm -std=c2x
 //Link:  gcc -m64 -no-pie -o search.out search.o -lm -std=c2x
 
@@ -66,33 +66,42 @@ int main(int argc, char* argv[])
 
 
     // ask the user to enter a short string to search for
-    while (!feof(stdin)) {
+    do {
       char input[max_search_length];
       int i = 0;
       int location[fileLength]; // initializing an array of integers with the same size as the file
       int loc = 0;
       printf("\nEnter a string to find or enter cntl+d to terminate: ");
       scanf("%s", input);
-      printf("%s was found at positions ", input);
-      if (input == ' ' || strncmp(arr+i, input, strlen(input)) != 0) {
-        printf("%s ", "none");
-      }
-      while (i < strlen(arr) - strlen(input)) {     // as long as we still have characters left
-        if (strncmp(arr+i, input, strlen(input)) == 0) {
-          location[loc] = i;  // store the position of the found character in the array of positions
-          printf("%d ", i + 2);
-          loc++;
+      if (!feof(stdin)) {
+        printf("%s was found at positions ", input);
+
+          if (input == ' ' || strncmp(arr+i, input, strlen(input)) != 0) {
+            printf("%s ", "none");
+          }
+
+        while (i < strlen(arr) - strlen(input)) {     // as long as we still have characters left
+          if (strncmp(arr+i, input, strlen(input)) == 0) {
+            location[loc] = i;  // store the position of the found character in the array of positions
+            printf("%d ", i + 2);
+            loc++;
+          }
+
+          i++;
         }
-        i++;
+
+      } else {
+        printf("\nThank you for using this search program.\n\n");
+        break;
       }
       printf("%s", "\n");
-    }
+    } while (!feof(stdin));
 
-    printf("Thank you for using this search program.\n\n");
     printf("Have a good day. We hope you enjoyed the string search.\n");
     printf("Come back any time for more searching. Bye\n");
     fclose(file);
   }
+
   return 0;
 }//End of main
 
