@@ -10,8 +10,8 @@
 
 //Programming language: C language
 //Date development begun: 2024-Feb-10
-//Date of last update:    2024-Feb-20
-//Status: Ask user to enter a string to search for until they enter control d
+//Date of last update:    2024-Feb-21
+//Status: Ask user to input file name and check if it exists
 //Compile:  gcc -c -Wall -m64 -no-pie -o search.o array_search.c -lm -std=c2x
 //Link:  gcc -m64 -no-pie -o search.out search.o -lm -std=c2x
 
@@ -27,26 +27,19 @@ int main(int argc, char* argv[])
 {
   // Ask the user for input (name of txt file that we want to read)
   FILE *file; // Pointer to input file
- // long int file_size; // calculate the size of the file
-  //int char_count;
-  //char character;
-  //const unsigned int max_length_file_name = 64;
+  const unsigned int max_length_file_name = 64;
   const unsigned int max_search_length = 32;
-  //char file_name[max_length_file_name];
-  printf("%s", "Welcome to Great String Search brought to you by Sama Ahmed.\n");
-  //printf("Please enter the name of your file: ");
-  //scanf("%s", file_name);
+  char file_name[max_length_file_name];
+  printf("%s", "Welcome to Great String Search brought to you by Sama Ahmed.\n\n");
+  printf("Please enter the name of your file: ");
+  scanf("%s", file_name);
 
-  // open the file in read only mode
-  //file_name[strlen(file_name) - 1] = '\0';
-  file = fopen("sheep.txt", "r"); // open the file for reading
-
-  //checking if the file exists, might want to do a do while loop, while the file == NULL, keep prompting the user to enter a filename
-  // while (NULL == file) {
-  //   printf("%s", "Sorry. File was not found. Try again.\n");
-  //   printf("Please enter the name of your file: ");
-  //   //scanf("%s", file_name);
-  // }
+  file = fopen(file_name, "r"); // open the file for reading
+  while (file == NULL) {
+    printf("%s", "Sorry. File was not found. Try again.\n");
+    printf("Please enter the name of your file: ");
+    scanf("%s", file_name);
+  }
 
   if (file != NULL) {
     printf("\nThe file has been opened with read permission.\n");
@@ -63,14 +56,13 @@ int main(int argc, char* argv[])
       arr[n++] = (char)c;   // store each character associated with each index
     }
     rewind(file);
-    arr[n] = '\0';
 
     // Testing Purposes
-    for (int i = 0; i < strlen(arr); i++) {   // looping through the array of characters
-      printf("%c", arr[i]);                   // printing the character at that index
-    }
+    // for (int i = 0; i < strlen(arr); i++) {   // looping through the array of characters
+    //   printf("%c", arr[i]);                   // printing the character at that index
+    // }
 
-    printf("\nThe file has been copied to a one-dimensional array.\n");
+    printf("The file has been copied to a one-dimensional array.\n");
 
 
     // ask the user to enter a short string to search for
@@ -96,11 +88,11 @@ int main(int argc, char* argv[])
       printf("%s", "\n");
     }
 
-    printf("%s", "\n");
-    printf("Thank you for using this search program.\n");
+    printf("Thank you for using this search program.\n\n");
     printf("Have a good day. We hope you enjoyed the string search.\n");
     printf("Come back any time for more searching. Bye\n");
     fclose(file);
   }
   return 0;
 }//End of main
+
