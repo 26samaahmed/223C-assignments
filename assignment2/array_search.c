@@ -11,7 +11,7 @@
 //Programming language: C language
 //Date development begun: 2024-Feb-10
 //Date of last update:    2024-Feb-21
-//Status: Fix issue with printing statements when user enters control D
+//Status: All of the program executes as expected except when the user enters an empty string or a string that doesn't exist in the file
 //Compile:  gcc -c -Wall -m64 -no-pie -o search.o array_search.c -lm -std=c2x
 //Link:  gcc -m64 -no-pie -o search.out search.o -lm -std=c2x
 
@@ -25,7 +25,7 @@
 
 int main(int argc, char* argv[])
 {
-  // Ask the user for input (name of txt file that we want to read)
+
   FILE *file; // Pointer to input file
   const unsigned int max_length_file_name = 64;
   const unsigned int max_search_length = 32;
@@ -39,6 +39,7 @@ int main(int argc, char* argv[])
     printf("%s", "Sorry. File was not found. Try again.\n");
     printf("Please enter the name of your file: ");
     scanf("%s", file_name);
+    file = fopen(file_name, "r"); // open the file for reading
   }
 
   if (file != NULL) {
@@ -57,16 +58,11 @@ int main(int argc, char* argv[])
     }
     rewind(file);
 
-    // Testing Purposes
-    // for (int i = 0; i < strlen(arr); i++) {   // looping through the array of characters
-    //   printf("%c", arr[i]);                   // printing the character at that index
-    // }
-
     printf("The file has been copied to a one-dimensional array.\n");
 
-
     // ask the user to enter a short string to search for
-    do {
+    do
+    {
       char input[max_search_length];
       int i = 0;
       int location[fileLength]; // initializing an array of integers with the same size as the file
@@ -76,21 +72,21 @@ int main(int argc, char* argv[])
       if (!feof(stdin)) {
         printf("%s was found at positions ", input);
 
-          if (input == ' ' || strncmp(arr+i, input, strlen(input)) != 0) {
-            printf("%s ", "none");
-          }
+        if (input == ' ' || strncmp(arr + i, input, strlen(input)) != 0) {
+          printf("%s ", "none");
+        }
 
-        while (i < strlen(arr) - strlen(input)) {     // as long as we still have characters left
-          if (strncmp(arr+i, input, strlen(input)) == 0) {
-            location[loc] = i;  // store the position of the found character in the array of positions
+        while (i < strlen(arr) - strlen(input)) { // as long as we still have characters left
+          if (strncmp(arr + i, input, strlen(input)) == 0) {
+            location[loc] = i; // store the position of the found character in the array of positions
             printf("%d ", i + 2);
             loc++;
           }
 
           i++;
         }
-
-      } else {
+      }
+      else {
         printf("\nThank you for using this search program.\n\n");
         break;
       }
@@ -104,4 +100,3 @@ int main(int argc, char* argv[])
 
   return 0;
 }//End of main
-
