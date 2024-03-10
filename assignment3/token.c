@@ -2,7 +2,7 @@
 // Contact: 26samahmed@csu.fullerton.edu
 // Course ID: CPSC223C
 // Due Date: 2024-Mar-13 at 11:59
-// Program name: Read and Output File
+// Program name: Tokenize
 
 // Purpose
 
@@ -10,8 +10,8 @@
 
 // Programming language: C language
 // Date development begun: 2024-Mar-4
-// Date of last update:    2024-Mar-4
-// Status: Implemented the strrok part
+// Date of last update:    2024-Mar-9
+// Status: Placed tokens in array
 // Compile:  gcc -c -Wall -m64 -no-pie -o search.o array_search.c -lm -std=c2x
 // Link:  gcc -m64 -no-pie -o search.out search.o -lm -std=c2x
 
@@ -29,8 +29,6 @@ int main(int argc, char *argv[])
   const unsigned int max_search_length = 32;
   char file_name[max_length_file_name];
   char input[max_search_length];
-  char * token;
-  int token_count = 0;
 
   printf("%s", "Welcome to Tokenizer brought to you by Sama Ahmed\n\n");
   printf("Please enter the name of your file: ");
@@ -82,27 +80,21 @@ int main(int argc, char *argv[])
 
     // Get the first token.
     // The first parameter is the array of chars to be tokenized and the second parameters contains the separators
-    token = strtok(arr, input);
+    char *token_arr[fileLength];
+    int token_count = 0;
+    token_count++;
+    token_arr[token_count] = strtok(arr, input);
 
-    if (token != NULL) {
-      printf("%s", "The tokens were found and placed into a two-dimensional array of char.  Here are the contents of the token array in forward order.\n\n");
+    printf("%s", "The tokens were found and placed into a two-dimensional array of char.  Here are the contents of the token array in forward order.\n\n");
+
+    printf("%s\n", token_arr[token_count]); // Print First Token
+
+    char * token;
+    while (NULL != (token = strtok(NULL, input))) {
+      token_arr[token_count] = token;
+      printf("%s\n", token_arr[token_count]);
+      token_count++;
     }
-
-    // char * token_arr[fileLength]; // create an array that can handle up to the same size as if the separators were there
-    // size_t j = 0;
-
-    while (token != NULL) {               // check the rest of the tokens
-      printf("%s\n", token);
-      token_count += 1;
-      token = strtok(NULL, input);
-     // token_arr[j++] = token;
-
-      // TODO:Place the tokens in a two dimensional array of char
-    }
-
-    // for (unsigned int i = 0; i < strlen(token_arr); i++) {
-    //   printf("%c", token_arr[i]);
-    // }
 
     printf("\nNumber of tokens is %d", token_count);
     printf("%s", "\n");
