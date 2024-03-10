@@ -10,8 +10,8 @@
 
 // Programming language: C language
 // Date development begun: 2024-Mar-4
-// Date of last update:    2024-Mar-9
-// Status: Placed tokens in array
+// Date of last update:    2024-Mar-10
+// Status: Write the token array to token file
 // Compile:  gcc -c -Wall -m64 -no-pie -o search.o array_search.c -lm -std=c2x
 // Link:  gcc -m64 -no-pie -o search.out search.o -lm -std=c2x
 
@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
 {
 
   FILE *file; // Pointer to input file
+  FILE *new_file;
   const unsigned int max_length_file_name = 64;
   const unsigned int max_search_length = 32;
   char file_name[max_length_file_name];
@@ -35,7 +36,6 @@ int main(int argc, char *argv[])
   scanf("%s", file_name);
 
   file = fopen(file_name, "r"); // open the file for reading
-  file_name[strlen(file_name) - 1] = '\0';
 
   // Prompt the user to enter a valid file name that's in the directory
   while (file == NULL) {
@@ -96,12 +96,34 @@ int main(int argc, char *argv[])
       token_count++;
     }
 
-    printf("\nNumber of tokens is %d", token_count);
-    printf("%s", "\n");
+    printf("\nNumber of tokens is %d\n", token_count);
 
-    // TODO: write the array of tokens so same current file name but with the extension .tok which is a token file
+    printf("\n");
+   // printf("%s", file_name); prints toys.txt
+    char *dot;
+    dot = strrchr(file_name, '.');
+   // printf("%s ", dot);  prints .txt
+    strcpy(dot, ".tok");
+    //printf("%s ", dot); // prints.tok
+    printf("\n");
+    printf("%s", file_name);  // prints toys.tok
+
+    new_file = fopen(file_name, "w");
+    int i;
+    printf("\n\n");
+    for (i = 0; i < token_count; i++) {
+      //printf("%s\n", token_arr[i]);
+      fprintf(new_file, "%s\n", token_arr[i]);
+    }
+
+
+    printf("\nThe array of tokens has been written to a filename named toys.tok.  It is generally called the token file.\n");
+    printf("\nYou may view the token file by entering the command \"cat toys.tok\".\n");
+
     // TODO: Get the size of the token file
+    printf("\nThe size of toys.tok is bytes\n");
 
+    fclose(new_file);
     fclose(file);
   }
 
