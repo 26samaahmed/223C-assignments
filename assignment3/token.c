@@ -1,7 +1,7 @@
 // Author: Sama Ahmed
 // Contact: 26samahmed@csu.fullerton.edu
 // Course ID: CPSC223C
-// Due Date: 2024-Mar-13 at 11:59
+// Due Date: 2024-Mar-14 at 2:00 AM
 // Program name: Tokenize
 
 // Purpose
@@ -10,8 +10,8 @@
 
 // Programming language: C language
 // Date development begun: 2024-Mar-4
-// Date of last update:    2024-Mar-10
-// Status: Write the token array to token file
+// Date of last update:    2024-Mar-11
+// Status: Almost done with program [need to check for some test cases]
 // Compile:  gcc -c -Wall -m64 -no-pie -o search.o array_search.c -lm -std=c2x
 // Link:  gcc -m64 -no-pie -o search.out search.o -lm -std=c2x
 
@@ -78,6 +78,14 @@ int main(int argc, char *argv[])
     printf("%s", "\nEnter some characters for the separator string and press enter: ");
     scanf("%s", input);
 
+
+    // Create and open token file so that i put the tokens inside
+    printf("\n");
+    char *dot;
+    dot = strrchr(file_name, '.');
+    strcpy(dot, ".tok");
+    new_file = fopen(file_name, "w");
+
     // Get the first token.
     // The first parameter is the array of chars to be tokenized and the second parameters contains the separators
     char *token_arr[fileLength];
@@ -88,40 +96,24 @@ int main(int argc, char *argv[])
     printf("%s", "The tokens were found and placed into a two-dimensional array of char.  Here are the contents of the token array in forward order.\n\n");
 
     printf("%s\n", token_arr[token_count]); // Print First Token
+    fprintf(new_file, "%s\n", token_arr[token_count]);  // print it to token file
 
     char * token;
     while (NULL != (token = strtok(NULL, input))) {
       token_arr[token_count] = token;
       printf("%s\n", token_arr[token_count]);
+      fprintf(new_file, "%s\n", token_arr[token_count]);
       token_count++;
     }
 
     printf("\nNumber of tokens is %d\n", token_count);
 
-    printf("\n");
-   // printf("%s", file_name); prints toys.txt
-    char *dot;
-    dot = strrchr(file_name, '.');
-   // printf("%s ", dot);  prints .txt
-    strcpy(dot, ".tok");
-    //printf("%s ", dot); // prints.tok
-    printf("\n");
-    printf("%s", file_name);  // prints toys.tok
-
-    new_file = fopen(file_name, "w");
-    int i;
-    printf("\n\n");
-    for (i = 0; i < token_count; i++) {
-      //printf("%s\n", token_arr[i]);
-      fprintf(new_file, "%s\n", token_arr[i]);
-    }
-
-
     printf("\nThe array of tokens has been written to a filename named toys.tok.  It is generally called the token file.\n");
     printf("\nYou may view the token file by entering the command \"cat toys.tok\".\n");
 
     // TODO: Get the size of the token file
-    printf("\nThe size of toys.tok is bytes\n");
+    long new_fileLength = ftell(new_file); // gets the size of the file
+    printf("\nThe size of toys.tok is %lu bytes\n", new_fileLength + 1);
 
     fclose(new_file);
     fclose(file);
@@ -129,3 +121,4 @@ int main(int argc, char *argv[])
 
     return 0;
 } // End of main
+
