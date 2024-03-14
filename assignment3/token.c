@@ -4,14 +4,15 @@
 // Due Date: 2024-Mar-14 at 2:00 AM
 // Program name: Tokenize
 
-// Purpose
+// This program takes the user to input separators. I then print the tokens which is the text in between those
+// user-specified separators.
 
 // Program was developed and tested on: Ubuntu
 
 // Programming language: C language
 // Date development begun: 2024-Mar-4
-// Date of last update:    2024-Mar-11
-// Status: Almost done with program [need to check for some test cases]
+// Date of last update:    2024-Mar-13
+// Status: Finished Program
 // Compile:  gcc -c -Wall -m64 -no-pie -o search.o array_search.c -lm -std=c2x
 // Link:  gcc -m64 -no-pie -o search.out search.o -lm -std=c2x
 
@@ -59,10 +60,10 @@ int main(int argc, char *argv[])
     int character;
     size_t counter = 0;
     while ((character = fgetc(file)) != EOF) {      // as long as we haven't reached the end of file, keep looping
-      // TODO: replace any newlines found with a space
+      // replace any newlines found with a space
       if (character == '\n') {
         putchar(' ');
-      }else {
+      } else {
         arr[counter++] = (char)character;             // store each character associated with each index
       }
     }
@@ -91,14 +92,19 @@ int main(int argc, char *argv[])
     char *token_arr[fileLength];
     int token_count = 0;
     token_count++;
+    char *token;
     token_arr[token_count] = strtok(arr, input);
 
     printf("%s", "The tokens were found and placed into a two-dimensional array of char.  Here are the contents of the token array in forward order.\n\n");
+    if (((token = strtok(NULL, input))) == NULL) {
+      token_arr[token_count] = " ";
+      printf("%s\n", token_arr[token_count]);
+      fprintf(new_file, "%s\n", token_arr[token_count]);
+    }
 
     printf("%s\n", token_arr[token_count]); // Print First Token
     fprintf(new_file, "%s\n", token_arr[token_count]);  // print it to token file
 
-    char * token;
     while (NULL != (token = strtok(NULL, input))) {
       token_arr[token_count] = token;
       printf("%s\n", token_arr[token_count]);
@@ -111,7 +117,7 @@ int main(int argc, char *argv[])
     printf("\nThe array of tokens has been written to a filename named toys.tok.  It is generally called the token file.\n");
     printf("\nYou may view the token file by entering the command \"cat toys.tok\".\n");
 
-    // TODO: Get the size of the token file
+    // Get the size of the token file
     long new_fileLength = ftell(new_file); // gets the size of the file
     printf("\nThe size of toys.tok is %lu bytes\n", new_fileLength + 1);
 
@@ -121,4 +127,3 @@ int main(int argc, char *argv[])
 
     return 0;
 } // End of main
-
