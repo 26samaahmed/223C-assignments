@@ -2,7 +2,7 @@
 // Contact: 26samahmed@csu.fullerton.edu
 // Course ID: CPSC223C
 // This product: Midterm Test
-// Due Date: 2024-March-14 at 11:00 AM
+// Due Date: 2024-March-30 at 11:00 AM
 // Compile:  gcc -c -Wall -m64 -no-pie -o search.o array_search.c -lm -std=c2x
 // Link:  gcc -m64 -no-pie -o search.out search.o -lm -std=c2x
 
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     file = fopen(file_name, "r"); // open the file for reading
   }
 
-    int num_of_lines = 0; // to keep track of how many lines the file
+    int num_of_lines = 0; // to keep track of how many lines the file has
 
     fseek(file, 0L, SEEK_END);
     long fileLength = ftell(file); // gets the size of the file
@@ -44,7 +44,6 @@ int main(int argc, char *argv[])
 
     char *myData[50]; // the array to hold each line in the file.
     char temp[1024];  // temporary line to store each line
-
 
     // read line from file and store them in array. This will keep going until we reach NULL which means EOF
     while (fgets(temp, 1024, file))
@@ -63,6 +62,7 @@ int main(int argc, char *argv[])
 
     // Increment line counter
     num_of_lines++;
+
     }
 
     printf("\n\nThe file has been copied to 2-dimensional array of row where each row is a string of chars.\n");
@@ -70,6 +70,8 @@ int main(int argc, char *argv[])
     rewind(file);
 
     printf("\n\nHere are the data of the array\n\n");
+
+    // Loop through each line and print the string
     for (unsigned int i = 0; i < num_of_lines; i++) {
       printf("%s", myData[i]);
       printf("\n");
@@ -82,13 +84,17 @@ int main(int argc, char *argv[])
         int index = 0;
         unsigned long loc[fileLength / strlen(target)];
         unsigned long here = 0;
+
         printf("\nPlease enter a string to search or press enter to quit: ");
         scanf("%255s", target);
         if (!feof(stdin)) {
           char *point;
           while (index < num_of_lines + 1)
           {
+            // Find the target on the current line
             point = strstr(myData[index], target);
+
+            // If the target was found, store it in the index array
             if (point != NULL) {
               loc[here] = index + 1;
               here++;
@@ -97,6 +103,8 @@ int main(int argc, char *argv[])
           }
 
           printf("The string is ");
+
+          // if the target was not found, print not found
           if (here == 0) {
             printf("not found");
           } else {
@@ -116,3 +124,5 @@ int main(int argc, char *argv[])
     return 0;
   } // End of main
 
+ 
+ 
