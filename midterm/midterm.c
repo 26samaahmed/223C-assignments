@@ -77,27 +77,42 @@ int main(int argc, char *argv[])
 
     printf("\n");
 
-    char target[256]; // user input
     do {
+        char target[256]; // user input
+        int index = 0;
+        unsigned long loc[fileLength / strlen(target)];
+        unsigned long here = 0;
+        printf("\nPlease enter a string to search or press enter to quit: ");
+        scanf("%255s", target);
         if (!feof(stdin)) {
-          printf("\nPlease enter a string to search or press enter to quit: ");
-          scanf("%255s", target);
           char *point;
-
-          printf("The string is in lines # ");
-          for (unsigned int i = 0; i < num_of_lines + 1; i++)
+          while (index < num_of_lines + 1)
           {
-            point = strstr(myData[i], target);
+            point = strstr(myData[index], target);
             if (point != NULL) {
-              printf("%d ", i + 1);
+              loc[here] = index + 1;
+              here++;
+            }
+            index++;
+          }
+
+          printf("The string is ");
+          if (here == 0) {
+            printf("not found");
+          } else {
+            printf("in lines # ");
+            for (int i = 0; i < here; i++) {
+              printf("%lu ", loc[i]);
             }
           }
-          printf("\n");
+        } else {
+          printf("\n\nHave a good day.  Bye\n");
+          break;
         }
 
     } while (!feof(stdin));
-    printf("Have a good day.  Bye\n");
     fclose(file);
 
     return 0;
   } // End of main
+
