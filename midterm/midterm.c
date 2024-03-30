@@ -2,7 +2,7 @@
 // Contact: 26samahmed@csu.fullerton.edu
 // Course ID: CPSC223C
 // This product: Midterm Test
-// Due Date: 2024-March-30 at 11:00 AM
+// Due Date: 2024-March-30 at 11:59 PM
 // Compile:  gcc -c -Wall -m64 -no-pie -o search.o array_search.c -lm -std=c2x
 // Link:  gcc -m64 -no-pie -o search.out search.o -lm -std=c2x
 
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     // NOTE: a 2D array of characters is a 1D array of strings
 
     char *myData[50]; // the array to hold each line in the file.
-    char temp[1024];  // temporary line to store each line
+    char temp[1024];  // temporary var to store each line
 
     // read line from file and store them in array. This will keep going until we reach NULL which means EOF
     while (fgets(temp, 1024, file))
