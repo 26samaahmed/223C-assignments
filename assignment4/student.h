@@ -30,12 +30,12 @@ struct Student {
   char name[100];
   unsigned int cwId;
   char major[100];
-  enum level
-  {
-    freshman,
-    sophomore,
-    junior,
-    senior
-  };
+  //enum level
+  // {
+  //   freshman,
+  //   sophomore,
+  //   junior,
+  //   senior
+  // };
   unsigned int zipCode;
 };

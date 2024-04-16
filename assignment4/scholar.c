@@ -45,44 +45,80 @@ int main(int argc, char *argv[])
     scanf("%s", file_name);
     file = fopen(file_name, "r"); // open the file for reading
   }
-  printf("You entered %s\n", file_name);
+
+  int num_of_lines = 0;
+  char *myData[50]; // the array to hold each line in the file.
+  char temp[1024];  // temporary var to store each line
+  // read line from file and store them in array. This will keep going until we reach NULL which means EOF
+
+  while (fgets(temp, 1024, file))
+  {
+    // Check if the we have a new line to replace it with a null character
+    int length = strlen(temp);
+    if (temp[length - 1] == '\n')
+    {
+      temp[length - 1] = '\0';
+    }
+
+    // allocate memory for the current line
+    myData[num_of_lines] = (char *)malloc((strlen(temp) + 1) * sizeof(char));
+
+    // copy whatever is in the temp variable to store it in the myData array
+    strcpy(myData[num_of_lines], temp);
+
+    // Increment line counter
+    num_of_lines++;
+  }
+
+
+  printf("\nYou entered %s\n", file_name);
   char *dot;
   dot = strrchr(file_name, '.');
   strcpy(dot, ".bin");
-  binaryFile = fopen(file_name, "w");
+  printf("The file name is %s\n", file_name);
+  binaryFile = fopen(file_name, "wb");
 
   printf("The output file name is %s\n", file_name);
 
-  // open text file for input
-  // read the text file
-  // open binary file for output
+  // Loop through each line and print the string
+  struct Student person;
+  for (unsigned int i = 0; i < num_of_lines; i++)
+  {
+    printf("%s\n", myData[i]);
+    fwrite(&person, sizeof(struct Student), 1, binaryFile);
+    // fprintf(binaryFile, "%s\n", myData[i]);
+  }
 
-  /*
-    // open the text file for input and the binary file for output
-    FILE *st_data = fopen(file_name, "r+b");
-    struct Student person;
-    enum
-    while (0 < fread(&person, sizeof(struct Student), 1, st_data)) {
-      printf("name = %s\n", person.name);
-      printf("cwid = %d\n", person.cwId);
-      printf("major = %s\n", person.major);
-      switch (class.level) {
-        case 1:
-          printf("Class level = freshman");
-          break;
-        case 2:
-          printf("Class level = sophomore");
-          break;
-        case 3:
-          printf("Class level = junior");
-          break;
-        case 4:
-          printf("Class level = senior");
-          break;
-      }
-      // switch case for class standing
-      printf("zip = %d\n", person.zipCode);
-    }
+  printf("\n");
 
-  */
-}
+
+
+
+
+
+
+//   FILE *st_data = fopen(file_name, "r+b");
+//   struct Student person;
+//   while (0 < fread(&person, sizeof(struct Student), 1, st_data))
+//   {
+//     printf("name = %s\n", person.name);
+//     printf("cwid = %d\n", person.cwId);
+//     printf("major = %s\n", person.major);
+//     // switch (person.level) {
+//     //   case 1:
+//     //     printf("Class level = freshman");
+//     //     break;
+//     //   case 2:
+//     //     printf("Class level = sophomore");
+//     //     break;
+//     //   case 3:
+//     //     printf("Class level = junior");
+//     //     break;
+//     //   case 4:
+//     //     printf("Class level = senior");
+//     //     break;
+//     // }
+//     // switch case for class standing
+//     printf("zip = %d\n", person.zipCode);
+//   }
+ }
