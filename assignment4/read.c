@@ -13,8 +13,8 @@
 // Date development begun: 2024-Apr-12
 // Date of last update:    2024-Apr-16
 // Status: Put text in binary file and read it then print to terminal
-// Compile:  gcc -c -Wall -m64 -no-pie -o scholar.o scholar.c -lm -std=c2x
-// Link:  gcc -m64 -no-pie -o result.out scholar.o -lm -std=c2x
+// Compile:  gcc -c -Wall -m64 -no-pie -o read.o read.c -lm -std=c2x
+// Link:  gcc -m64 -no-pie -o r.out read.o -lm -std=c2x
 
 //======== Begin source code ==========
 
@@ -23,11 +23,24 @@
 #include <stdlib.h>
 #include "student.h"
 
+const char* convertEnum( enum classLevel level) {
+  switch (level) {
+    case freshman:
+      return "freshman";
+    case sophomore:
+      return "sophomore";
+    case junior:
+      return "junior";
+    case senior:
+      return "senior";
+    default:
+      return "unknown";
+    }
+}
+
 int main(int argc, char *argv[])
 {
-
   FILE *file; // Pointer to input file
-  FILE *binaryFile;
   const unsigned int max_length_file_name = 64;
   char file_name[max_length_file_name];
 
@@ -46,51 +59,25 @@ int main(int argc, char *argv[])
     file = fopen(file_name, "r"); // open the file for reading
   }
 
-
+  printf("You entered %s\n", file_name);
   char *dot;
   dot = strrchr(file_name, '.');
   strcpy(dot, ".bin");
   printf("The file name is %s\n", file_name);
-  binaryFile = fopen(file_name, "wb");
 
-  printf("The output file name is %s\n", file_name);
+  FILE *st_data = fopen(file_name, "r+b");
+  struct Student person2;
 
-  char name[100];
-  unsigned int cwid;
-  char major[100];
-  unsigned int zip;
-  struct Student person;
-  char class_level_string[20];
-
-  while (!feof(file))
+  while (fread(&person2, sizeof(struct Student), 1, st_data) > 0)
   {
-    fscanf(file, "%s\n%u\n%s\n%s\n%u", name, &cwid, major, class_level_string, &zip);
-
-    if (strcmp(class_level_string, "freshman") == 0)
-    {
-      person.level = freshman;
-    }
-    else if (strcmp(class_level_string, "sophomore") == 0)
-    {
-      person.level = sophomore;
-    }
-    else if (strcmp(class_level_string, "junior") == 0)
-    {
-      person.level = junior;
-    }
-    else if (strcmp(class_level_string, "senior") == 0)
-    {
-      person.level = senior;
-    }
-    else
-    {
-      printf("Invalid class: %s\n", class_level_string);
-      continue;
-    }
-    strcpy(person.name , name), person.cwId = cwid, strcpy(person.major , major), person.zipCode = zip;
-    fwrite(&person, sizeof(struct Student), 1, binaryFile);
+      printf("name = %s\n", person2.name);
+      printf("cwid = %d\n", person2.cwId);
+      printf("major = %s\n", person2.major);
+      printf("class level = %s\n", convertEnum(person2.level));
+      printf("zip = %d\n", person2.zipCode);
   }
 
-  fclose(binaryFile);
+  printf("The binary file was created.\n");
+  printf("Bye\n");
 
 }

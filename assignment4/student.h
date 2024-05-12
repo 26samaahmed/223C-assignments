@@ -11,31 +11,25 @@
 
 // Programming language: C language
 // Date development begun: 2024-Apr-12
-// Date of last update:    2024-Apr-12
-// Status: Open text file for input and binary file for output
+// Date of last update:    2024-Apr-16
+// Status: Put text in binary file and read it then print to terminal
 // Compile:  gcc -c -Wall -m64 -no-pie -o student.o student.h -lm -std=c2x
 // Link:  gcc -m64 -no-pie -o output.out student.o -lm -std=c2x
 
 //======== Begin source code ==========
 
-/* every student has:
- 1. a name (array of char)
- 2. cwid (unsigned int)
- 3. major (array of char)
- 4. class standing (enum class)
- 5. zip code (unsigned int)
- */
+enum classLevel
+{
+  freshman,
+  sophomore,
+  junior,
+  senior
+};
 
 struct Student {
   char name[100];
   unsigned int cwId;
   char major[100];
-  //enum level
-  // {
-  //   freshman,
-  //   sophomore,
-  //   junior,
-  //   senior
-  // };
+  enum classLevel level;
   unsigned int zipCode;
 };
