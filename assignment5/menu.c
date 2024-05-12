@@ -11,8 +11,8 @@
 
 // Programming language: C language
 // Date development begun: 2024-May-11
-// Date of last update:    2024-May-11
-// Status: Worked on options M, X, P, O, F. I have N and R left
+// Date of last update:    2024-May-12
+// Status: Work on Remove Function.
 // Compile:  gcc -c -Wall -m64 -no-pie -o menu.o menu.c -lm -std=c2x
 // Link:  gcc -m64 -no-pie -o menu.out menu.o -lm -std=c2x
 
@@ -59,17 +59,19 @@ void display_output() {
   int counter = 0;
   while (fread(&student, sizeof(struct Student), 1, st_data) > 0)
   {
-    ++counter;
-    printf("name = %s\n", student.name);
-    printf("cwid = %d\n", student.cwId);
-    printf("major = %s\n", student.major);
-    printf("class level = %s\n", convertEnum(student.level));
-    printf("zip = %d\n", student.zipCode);
-    printf("\n\n-------------------------------------\n\n");
+     if ((int) student.cwId > 0) {
+      printf("name = %s\n", student.name);
+      printf("cwid = %d\n", student.cwId);
+      printf("major = %s\n", student.major);
+      printf("class level = %s\n", convertEnum(student.level));
+      printf("zip = %d\n", student.zipCode);
+      printf("\n\n-------------------------------------\n\n");
+      ++counter;
+    }
   }
   printf("Number of data records is %d.\n", counter);
 
-  //TODO: If there is negative cwid, then do not ouput the data.
+  //TODO: If there is negative cwid, then do not ouput the data. (done)
   //TODO: Fix the last student record being printed twice.
 }
 
@@ -126,6 +128,39 @@ void display_by_cwid() {
       ++counter;
     }
   }
+
+  // If we reach the end, and we haven't found the cwid then print not found
+  if (student.cwId != campusWideID) {
+    printf("Record not found.\n");
+  }
+
+  // TODO: If cwid was not found, print record is not found (done)
+}
+
+void remove_record() {
+  int campusWideID;
+  printf("Please enter a student's CWID to remove their record: ");
+  scanf("%d", &campusWideID);
+
+  FILE *st_data = fopen("csuf.bin", "wb");
+  struct Student student;
+
+  while (fread(&student, sizeof(struct Student), 1, st_data) > 0)
+  {
+    // if we find the campus wide id then change it to become negative so it's ignored when printed
+    if (student.cwId == campusWideID) {
+
+    // change the cwid to a negative number and write the struct object back into the binary file at the exact same place it was read from
+      student.cwId = -(int)student.cwId;
+      fwrite(&student, sizeof(struct Student), 1, st_data);
+      printf("Reached\n");
+      printf("\n\nThe data of student %d has been removed.\n\n", campusWideID);
+    }
+  }
+
+  // if (student.cwId != campusWideID) {
+  //   printf("Not found\n");
+  // }
 }
 
 int main(int argc, char *argv[])
@@ -172,7 +207,7 @@ int main(int argc, char *argv[])
       break;
 
     case 'R':
-      /* call function */
+     // remove_record();
       break;
 
     default:
